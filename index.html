@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Nội dung Mác – Lênin: vấn đề dân tộc Việt Nam, phụ lục AI và hộp thoại trao đổi."
+    />
+    <title>Mác – Lênin | Vấn đề dân tộc Việt Nam</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Playfair+Display:wght@700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/main.css" />
+  </head>
+  <body>
+    <nav class="site-nav" aria-label="Điều hướng chính">
+      <div class="site-nav__inner">
+        <a class="site-nav__brand" href="#top">
+          <span class="site-nav__brand-mark">ML</span>
+          <span class="site-nav__brand-text">Mác – Lênin</span>
+        </a>
+        <div class="site-nav__links" role="tablist" aria-label="Nội dung">
+          <button
+            type="button"
+            class="site-nav__link tab-bar__btn"
+            role="tab"
+            id="tab-btn-main"
+            aria-selected="true"
+            aria-controls="panel-main"
+            data-tab="main"
+          >
+            Nội dung chính
+          </button>
+          <button
+            type="button"
+            class="site-nav__link tab-bar__btn"
+            role="tab"
+            id="tab-btn-appendix"
+            aria-selected="false"
+            aria-controls="panel-appendix"
+            data-tab="appendix"
+          >
+            Phụ lục AI
+          </button>
+          <button
+            type="button"
+            class="site-nav__link tab-bar__btn"
+            role="tab"
+            id="tab-btn-chat"
+            aria-selected="false"
+            aria-controls="panel-chat"
+            data-tab="chat"
+          >
+            Chat box
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <header id="top" class="hero">
+      <div class="hero__overlay"></div>
+      <div class="hero__content">
+        <p class="hero__eyebrow">Mác – Lênin · Nội dung học tập</p>
+        <h1 class="hero__title">
+          VẤN ĐỀ DÂN TỘC<br />
+          <span class="hero__title-accent">VIỆT NAM</span>
+        </h1>
+        <p class="hero__lead">
+          Đặc điểm các dân tộc, quan điểm và chính sách dân tộc của Đảng và Nhà nước
+          trong bối cảnh xây dựng và bảo vệ Tổ quốc.
+        </p>
+        <button type="button" class="hero__cta" data-scroll-target="panel-main">
+          Khám phá nội dung
+        </button>
+      </div>
+    </header>
+
+    <main class="main-layout">
+      <section
+        id="panel-main"
+        class="tab-panel"
+        role="tabpanel"
+        aria-labelledby="tab-btn-main"
+        aria-hidden="false"
+        data-panel="main"
+      >
+        <div class="section-banner">
+          <span class="section-banner__label">Nội dung chính</span>
+          <h2 class="section-banner__title">Vấn đề dân tộc Việt Nam</h2>
+        </div>
+        <div id="content-main" class="content-body">
+          <p class="content-placeholder">Đang tải nội dung…</p>
+        </div>
+      </section>
+
+      <section
+        id="panel-appendix"
+        class="tab-panel"
+        role="tabpanel"
+        aria-labelledby="tab-btn-appendix"
+        aria-hidden="true"
+        data-panel="appendix"
+      >
+        <div class="section-banner">
+          <span class="section-banner__label">Phụ lục</span>
+          <h2 class="section-banner__title">Phụ lục AI</h2>
+        </div>
+        <div id="content-appendix" class="content-body content-body--appendix">
+          <p class="content-placeholder">Đang tải nội dung…</p>
+        </div>
+        <p class="content-note">
+          Nhật ký phát triển có AI: xem
+          <strong>doc/phu-luc-log-ai.md</strong> trong project.
+        </p>
+      </section>
+
+      <section
+        id="panel-chat"
+        class="tab-panel"
+        role="tabpanel"
+        aria-labelledby="tab-btn-chat"
+        aria-hidden="true"
+        data-panel="chat"
+      >
+        <div class="section-banner">
+          <span class="section-banner__label">Trao đổi</span>
+          <h2 class="section-banner__title">Chat box</h2>
+        </div>
+        <p class="content-note content-note--chat">
+          Chatbot Chương 6 — vấn đề dân tộc. Kết nối API tại
+          <code id="chat-api-url">http://localhost:5000</code>
+          (đổi bằng <code>?api=https://your-host:5000</code> trên URL).
+        </p>
+
+        <div id="chat-status" class="chat-status chat-status--checking" role="status">
+          Đang kiểm tra kết nối API…
+        </div>
+        <div id="chat-error" class="chat-error" role="alert" hidden></div>
+
+        <div class="chat-panel card-surface">
+          <div class="chat-panel__head">
+            <h3 class="chat-panel__title">Hội thoại</h3>
+            <p class="chat-panel__subtitle">Trợ lý AI · Chương 6</p>
+          </div>
+
+          <ul id="chat-messages" class="chat-messages" aria-live="polite"></ul>
+
+          <form id="chat-form" class="chat-composer">
+            <label class="visually-hidden" for="chat-input">Tin nhắn</label>
+            <textarea
+              id="chat-input"
+              name="message"
+              rows="2"
+              placeholder="Nhập câu hỏi của bạn…"
+              required
+            ></textarea>
+            <button type="submit" class="btn btn--primary chat-composer__send">Gửi</button>
+          </form>
+
+          <div class="chat-toolbar">
+            <button type="button" id="chat-new" class="btn btn--secondary">
+              Chat mới
+            </button>
+            <button type="button" id="chat-export" class="btn btn--secondary">
+              Xuất nhật ký (.md)
+            </button>
+            <button type="button" id="chat-clear" class="btn btn--ghost">
+              Xóa phiên
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>
+        <strong>mac-lenin-web</strong> · Mác – Lênin · Đỏ #850101 · Vàng #D4AF37
+      </p>
+    </footer>
+
+    <script>
+      window.__MAC_LENIN_API_BASE__ = window.__MAC_LENIN_API_BASE__ || "http://localhost:5000";
+    </script>
+    <script type="module" src="js/app.js"></script>
+  </body>
+</html>
