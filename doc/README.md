@@ -6,8 +6,10 @@ Thư mục **doc/** chứa nhật ký và phụ lục, **không** ảnh hưởng
 
 | File | Mục đích |
 |------|----------|
-| [phu-luc-log-ai.md](./phu-luc-log-ai.md) | Nhật ký các bước phát triển có hỗ trợ AI |
+| [phu-luc-log-ai.md](./phu-luc-log-ai.md) | Nhật ký AI: **Phần A** (frontend mac-lenin-web) + **Phần B** (backend Chat API) |
 | `chat-log-*.md` | (Tùy chọn) Copy file xuất từ tab Chat box vào đây |
+
+Trên website, tab **Phụ lục AI** đọc từ `content/phu-luc-ai.md` (nguyên tắc MLN131); file `doc/phu-luc-log-ai.md` là bản chi tiết cho báo cáo.
 
 ## Cách trích dẫn trong báo cáo
 
