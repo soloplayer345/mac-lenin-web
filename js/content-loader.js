@@ -15,18 +15,55 @@ function escapeHtml(text) {
 }
 
 function inlineMarkdown(text) {
-  return escapeHtml(text)
-    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-    .replace(/\*(.+?)\*/g, "<em>$1</em>")
+  let html = escapeHtml(text)
     .replace(
-      /(https?:\/\/[^\s<]+)/g,
-      '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
-    );
+      /\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g,
+      '<a class="content-link" href="$2" target="_blank" rel="noopener noreferrer">$1</a>'
+    )
+    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+    .replace(/\*(.+?)\*/g, "<em>$1</em>");
+
+  // Chỉ autolink URL đứng riêng — tránh bọc lại URL đã nằm trong href
+  html = html.replace(
+    /(^|[^"'>=])(https?:\/\/[^\s<")]+)/g,
+    '$1<a class="content-link" href="$2" target="_blank" rel="noopener noreferrer">$2</a>'
+  );
+
+  return html;
+}
+
+function chunkTextFromBody(bodyLines) {
+  const bullets = bodyLines
+    .map((line) => line.match(/^- (.+)$/))
+    .filter(Boolean)
+    .map((match) => match[1].trim());
+
+  if (bullets.length) return bullets;
+
+  const text = bodyLines.join(" ").trim();
+  if (!text) return [];
+
+  const sentences = text.split(/(?<=[.!?…])\s+/).filter((part) => part.trim().length > 12);
+  return sentences.length > 1 ? sentences : [text];
+}
+
+function miniCardHtml(text) {
+  return `<article class="topic-card topic-card--mini card-hover">
+    <p class="topic-card__text">${inlineMarkdown(text)}</p>
+  </article>`;
+}
+
+function insightGroupHtml(label, chunks) {
+  if (!chunks.length) return "";
+  return `<div class="insight-group">
+    <p class="insight-group__label">${inlineMarkdown(label)}</p>
+    <div class="card-grid card-grid--mini">${chunks.map((chunk) => miniCardHtml(chunk)).join("")}</div>
+  </div>`;
 }
 
 function topicCardsFromBlock(block) {
   const lines = block.trim().split("\n");
-  const cards = [];
+  const groups = [];
   let i = 0;
 
   while (i < lines.length) {
@@ -39,19 +76,14 @@ function topicCardsFromBlock(block) {
         if (lines[i].trim()) bodyLines.push(lines[i].trim());
         i += 1;
       }
-      cards.push(
-        `<article class="topic-card card-hover">
-          <h4 class="topic-card__title">${inlineMarkdown(title)}</h4>
-          <p class="topic-card__text">${inlineMarkdown(bodyLines.join(" "))}</p>
-        </article>`
-      );
+      groups.push(insightGroupHtml(title, chunkTextFromBody(bodyLines)));
       continue;
     }
     i += 1;
   }
 
-  if (!cards.length) return "";
-  return `<div class="card-grid">${cards.join("")}</div>`;
+  if (!groups.length) return "";
+  return `<div class="insight-groups">${groups.join("")}</div>`;
 }
 
 function renderSection(index, title, body) {
@@ -103,10 +135,16 @@ function formatPlainBlock(block) {
   }
 
   for (const line of block.split("\n")) {
-    const bullet = line.match(/^- (.+)$/);
-    if (bullet) {
+    const bullet = line.match(/^(\s*)- (.+)$/);
+    if (bullet && bullet[1].length === 0) {
       flushParagraph();
-      listItems.push(bullet[1]);
+      listItems.push(bullet[2]);
+      continue;
+    }
+    if (bullet && bullet[1].length > 0) {
+      flushParagraph();
+      flushList();
+      chunks.push(`<ul class="content-sublist"><li>${inlineMarkdown(bullet[2])}</li></ul>`);
       continue;
     }
     if (!line.trim()) {

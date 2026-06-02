@@ -1,4 +1,4 @@
-import { SESSION_STORAGE_KEY, getApiBase } from "./config.js";
+import { SESSION_STORAGE_KEY } from "./config.js";
 import {
   checkHealth,
   deleteHistory,
@@ -151,40 +151,15 @@ function setFormBusy(form, input, submitBtn, busy) {
   form.classList.toggle("chat-form--busy", busy);
 }
 
-function setStatus(el, state, text) {
-  if (!el) return;
-  el.className = `chat-status chat-status--${state}`;
-  el.textContent = text;
-}
-
-export function exportChatMarkdown(messages) {
-  const lines = [
-    "# Nhật ký Chat — Mác Lênin Web",
-    "",
-    `**Xuất lúc:** ${new Date().toLocaleString("vi-VN")}`,
-    `**API:** ${getApiBase()}`,
-    "",
-    "---",
-    "",
-  ];
-
-  messages.forEach((m) => {
-    const label = m.role === "user" ? "Người dùng" : "Trợ lý AI";
-    lines.push(`### ${label} — ${formatTime(m.time)}`, "", m.text, "", "---", "");
-  });
-
-  return lines.join("\n");
-}
+const OFFLINE_REPLY = "hết token ai";
 
 export function initChat() {
   const listEl = document.getElementById("chat-messages");
   const form = document.getElementById("chat-form");
   const input = document.getElementById("chat-input");
   const submitBtn = form?.querySelector('button[type="submit"]');
-  const exportBtn = document.getElementById("chat-export");
   const clearBtn = document.getElementById("chat-clear");
   const newChatBtn = document.getElementById("chat-new");
-  const statusEl = document.getElementById("chat-status");
   const errorEl = document.getElementById("chat-error");
 
   if (!listEl || !form || !input) return;
@@ -206,22 +181,11 @@ export function initChat() {
   }
 
   async function refreshHealth() {
-    setStatus(statusEl, "checking", "Đang kiểm tra kết nối API…");
     try {
       await checkHealth();
       apiOnline = true;
-      setStatus(
-        statusEl,
-        "online",
-        `Đã kết nối · ${getApiBase()} · Phiên: ${sessionId ? "đang dùng" : "mới"}`
-      );
     } catch {
       apiOnline = false;
-      setStatus(
-        statusEl,
-        "offline",
-        `Chưa kết nối API · ${getApiBase()} — chạy backend hoặc đổi ?api=URL`
-      );
     }
   }
 
@@ -277,7 +241,13 @@ export function initChat() {
     }
 
     if (!apiOnline) {
-      showError("API chưa sẵn sàng. Kiểm tra backend (GET /health) rồi thử lại.");
+      const now = new Date().toISOString();
+      messages.push({ role: "user", text, time: now });
+      messages.push({ role: "assistant", text: OFFLINE_REPLY, time: now });
+      input.value = "";
+      showError("");
+      renderMessages(listEl, messages);
+      input.focus();
       return;
     }
 
@@ -306,25 +276,11 @@ export function initChat() {
     }
   });
 
-  exportBtn?.addEventListener("click", () => {
-    const md = exportChatMarkdown(messages);
-    const blob = new Blob([md], { type: "text/markdown;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    const stamp = new Date().toISOString().slice(0, 10);
-    a.href = url;
-    a.download = `chat-log-${stamp}.md`;
-    a.click();
-    URL.revokeObjectURL(url);
+  clearBtn?.addEventListener("click", () => {
+    startNewChat();
   });
 
-  clearBtn?.addEventListener("click", async () => {
-    if (!confirm("Xóa phiên chat trên server và bắt đầu lại?")) return;
-    await startNewChat();
-  });
-
-  newChatBtn?.addEventListener("click", async () => {
-    if (messages.length && !confirm("Bắt đầu cuộc trò chuyện mới?")) return;
-    await startNewChat();
+  newChatBtn?.addEventListener("click", () => {
+    startNewChat();
   });
 }

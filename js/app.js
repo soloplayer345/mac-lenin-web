@@ -1,8 +1,6 @@
 import { initTabs } from "./tabs.js";
 import { initContentPanels } from "./content-loader.js";
 import { initChat } from "./chat.js";
-import { getApiBase } from "./config.js";
-
 function initHeroScroll() {
   const cta = document.querySelector("[data-scroll-target]");
   if (!cta) return;
@@ -17,9 +15,6 @@ function initHeroScroll() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const apiUrlEl = document.getElementById("chat-api-url");
-  if (apiUrlEl) apiUrlEl.textContent = getApiBase();
-
   initTabs();
   initContentPanels();
   initChat();

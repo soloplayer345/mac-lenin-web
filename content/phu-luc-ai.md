@@ -7,8 +7,8 @@
 **Công cụ và mục đích sử dụng:**
 
 - **ChatGPT:** Hỗ trợ tìm kiếm và tổng hợp thông tin cho website để hệ thống lý luận chặt chẽ hơn.
-  - Tiktok Culture Audit: https://chatgpt.com/share/6a186263-2830-83ec-9af0-0c7e6003c491
-  - Nội dung bài học: https://chatgpt.com/s/t_6a186cd5e6a0819199cdc3f4a4f0bd09
+- **TikTok Culture Audit:** [Mở liên kết ChatGPT](https://chatgpt.com/share/6a186263-2830-83ec-9af0-0c7e6003c491)
+- **Nội dung bài học:** [Mở liên kết ChatGPT](https://chatgpt.com/s/t_6a186cd5e6a0819199cdc3f4a4f0bd09)
 - **Cursor Agent:** Hỗ trợ lập trình frontend, tích hợp API chat, chỉnh giao diện và soạn tài liệu phụ lục.
 
 ### 2. Có trách nhiệm
@@ -46,4 +46,5 @@ Nhật ký từng bước có hỗ trợ AI (frontend **mac-lenin-web** và back
 
 **`doc/phu-luc-log-ai.md`**
 
-Repository GitHub: https://github.com/soloplayer345/mac-lenin-web
+- **Frontend (mac-lenin-web):** [github.com/soloplayer345/mac-lenin-web](https://github.com/soloplayer345/mac-lenin-web)
+- **Backend (cnxh-chapter6-chat-api):** [github.com/soloplayer345/cnxh-chapter6-chat-api](https://github.com/soloplayer345/cnxh-chapter6-chat-api)

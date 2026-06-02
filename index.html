@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Nội dung Mác – Lênin: vấn đề dân tộc Việt Nam, phụ lục AI và hộp thoại trao đổi."
+      content="Mác – Lênin: đặc điểm dân tộc Việt Nam, tái cấu trúc bản sắc trên không gian số (TikTok Culture Audit), phụ lục AI và chat."
     />
-    <title>Mác – Lênin | Vấn đề dân tộc Việt Nam</title>
+    <title>Mác – Lênin | Dân tộc &amp; không gian số</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -66,12 +66,12 @@
       <div class="hero__content">
         <p class="hero__eyebrow">Mác – Lênin · Nội dung học tập</p>
         <h1 class="hero__title">
-          VẤN ĐỀ DÂN TỘC<br />
-          <span class="hero__title-accent">VIỆT NAM</span>
+          ĐẶC ĐIỂM DÂN TỘC<br />
+          <span class="hero__title-accent">VÀ KHÔNG GIAN SỐ</span>
         </h1>
         <p class="hero__lead">
-          Đặc điểm các dân tộc, quan điểm và chính sách dân tộc của Đảng và Nhà nước
-          trong bối cảnh xây dựng và bảo vệ Tổ quốc.
+          Đề tài tích hợp: đặc điểm dân tộc tại Việt Nam và sự tái cấu trúc bản sắc
+          trên không gian số — TikTok Culture Audit.
         </p>
         <button type="button" class="hero__cta" data-scroll-target="panel-main">
           Khám phá nội dung
@@ -90,7 +90,7 @@
       >
         <div class="section-banner">
           <span class="section-banner__label">Nội dung chính</span>
-          <h2 class="section-banner__title">Vấn đề dân tộc Việt Nam</h2>
+          <h2 class="section-banner__title">TikTok Culture Audit</h2>
         </div>
         <div id="content-main" class="content-body">
           <p class="content-placeholder">Đang tải nội dung…</p>
@@ -130,15 +130,6 @@
           <span class="section-banner__label">Trao đổi</span>
           <h2 class="section-banner__title">Chat box</h2>
         </div>
-        <p class="content-note content-note--chat">
-          Chatbot Chương 6 — vấn đề dân tộc. Kết nối API tại
-          <code id="chat-api-url">http://localhost:5000</code>
-          (đổi bằng <code>?api=https://your-host:5000</code> trên URL).
-        </p>
-
-        <div id="chat-status" class="chat-status chat-status--checking" role="status">
-          Đang kiểm tra kết nối API…
-        </div>
         <div id="chat-error" class="chat-error" role="alert" hidden></div>
 
         <div class="chat-panel card-surface">
@@ -162,15 +153,8 @@
           </form>
 
           <div class="chat-toolbar">
-            <button type="button" id="chat-new" class="btn btn--secondary">
-              Chat mới
-            </button>
-            <button type="button" id="chat-export" class="btn btn--secondary">
-              Xuất nhật ký (.md)
-            </button>
-            <button type="button" id="chat-clear" class="btn btn--ghost">
-              Xóa phiên
-            </button>
+            <button type="button" id="chat-new" class="chat-action">Chat mới</button>
+            <button type="button" id="chat-clear" class="chat-action chat-action--muted">Xóa phiên</button>
           </div>
         </div>
       </section>
