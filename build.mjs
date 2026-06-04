@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const OUT = path.join(ROOT, "dist");
-const COPY_DIRS = ["css", "js", "content"];
+const COPY_DIRS = ["css", "js", "content", "images"];
 const COPY_FILES = ["index.html"];
 
 const API_BASE = (process.env.MAC_LENIN_API_BASE || "http://localhost:5000").replace(/\/$/, "");
