@@ -62,10 +62,21 @@ mac-lenin-web/
 ## Deploy Netlify
 
 ```bash
-bun run build   # tạo thư mục dist/ với API base từ env
+npm run build   # hoặc: bun run build — tạo dist/js/env.js từ MAC_LENIN_API_BASE
 ```
 
-`netlify.toml` đã cấu hình `command = "bun run build"` và `publish = "dist"`. Trên Netlify chỉ cần thêm biến `MAC_LENIN_API_BASE` trỏ tới backend public (ngrok hoặc server thật).
+**Cấu hình bắt buộc trên Netlify:**
+
+1. **Site configuration → Environment variables** (scope **Production**):
+   - `MAC_LENIN_API_BASE` = `https://pretendedly-autopotamic-maynard.ngrok-free.dev` (không có slash cuối)
+2. **Site configuration → Build & deploy → Build settings:**
+   - Build command: để trống hoặc `npm run build` (Netlify đọc `netlify.toml`)
+   - Publish directory: để trống hoặc `dist` — **không** để `.` (root)
+3. **Deploy → Trigger deploy → Clear cache and deploy site**
+
+**Kiểm tra sau deploy:** mở `https://your-site.netlify.app/js/env.js` — phải thấy URL ngrok, không phải `localhost:5000`.
+
+Nếu trình duyệt vẫn gọi URL cũ: xóa `localStorage` key `mac-lenin-api-base` (DevTools → Application) hoặc thử tab ẩn danh.
 
 **Chạy thử:**
 

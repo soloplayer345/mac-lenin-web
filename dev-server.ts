@@ -1,7 +1,6 @@
 const PORT = Number(process.env.PORT) || 3000;
 const ROOT = import.meta.dir;
 const API_BASE = (process.env.MAC_LENIN_API_BASE || "http://localhost:5000").replace(/\/$/, "");
-const API_BASE_PLACEHOLDER = "%MAC_LENIN_API_BASE%";
 
 const MIME: Record<string, string> = {
   ".html": "text/html; charset=utf-8",
@@ -18,10 +17,21 @@ function resolvePath(pathname: string): string | null {
   return `${ROOT}${path}`;
 }
 
+function makeEnvJs() {
+  return `window.__MAC_LENIN_API_BASE__ = ${JSON.stringify(API_BASE)};\n`;
+}
+
 const server = Bun.serve({
   port: PORT,
   async fetch(req) {
-    const filePath = resolvePath(new URL(req.url).pathname);
+    const pathname = new URL(req.url).pathname;
+    if (pathname === "/js/env.js") {
+      return new Response(makeEnvJs(), {
+        headers: { "Content-Type": "text/javascript; charset=utf-8" },
+      });
+    }
+
+    const filePath = resolvePath(pathname);
     if (!filePath) {
       return new Response("Bad Request", { status: 400 });
     }
@@ -33,15 +43,10 @@ const server = Bun.serve({
 
     const ext = filePath.slice(filePath.lastIndexOf("."));
     const type = MIME[ext];
-
-    if (filePath.endsWith("index.html")) {
-      const html = (await file.text()).replaceAll(API_BASE_PLACEHOLDER, API_BASE);
-      return new Response(html, { headers: { "Content-Type": type ?? "text/html; charset=utf-8" } });
-    }
-
     return new Response(file, type ? { headers: { "Content-Type": type } } : undefined);
   },
 });
 
 console.log(`Dev server: http://localhost:${server.port}`);
+console.log(`API base: ${API_BASE}`);
 console.log("Nhấn Ctrl+C để dừng.");
