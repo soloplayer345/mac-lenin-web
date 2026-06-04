@@ -54,9 +54,18 @@ mac-lenin-web/
 
 **Đổi địa chỉ API:**
 
-- Sửa `window.__MAC_LENIN_API_BASE__` trong `index.html`, hoặc
-- Mở trang kèm query: `http://localhost:3000?api=http://192.168.1.10:5000` (lưu vào localStorage), hoặc
-- Ngrok: `?api=https://xxxx.ngrok-free.dev` (tự thêm header `ngrok-skip-browser-warning`)
+- Biến môi trường `MAC_LENIN_API_BASE` (xem `.env.example`) — inject lúc `bun run build` và khi `bun run dev`
+- Trên **Netlify:** Site settings → Environment variables → `MAC_LENIN_API_BASE=https://xxxx.ngrok-free.dev` rồi redeploy
+- Hoặc mở trang kèm query: `?api=http://192.168.1.10:5000` (lưu vào localStorage, ưu tiên cao nhất)
+- Ngrok: header `ngrok-skip-browser-warning` được thêm tự động khi URL có `ngrok`
+
+## Deploy Netlify
+
+```bash
+bun run build   # tạo thư mục dist/ với API base từ env
+```
+
+`netlify.toml` đã cấu hình `command = "bun run build"` và `publish = "dist"`. Trên Netlify chỉ cần thêm biến `MAC_LENIN_API_BASE` trỏ tới backend public (ngrok hoặc server thật).
 
 **Chạy thử:**
 

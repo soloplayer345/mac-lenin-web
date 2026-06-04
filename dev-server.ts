@@ -1,5 +1,7 @@
 const PORT = Number(process.env.PORT) || 3000;
 const ROOT = import.meta.dir;
+const API_BASE = (process.env.MAC_LENIN_API_BASE || "http://localhost:5000").replace(/\/$/, "");
+const API_BASE_PLACEHOLDER = "%MAC_LENIN_API_BASE%";
 
 const MIME: Record<string, string> = {
   ".html": "text/html; charset=utf-8",
@@ -31,6 +33,12 @@ const server = Bun.serve({
 
     const ext = filePath.slice(filePath.lastIndexOf("."));
     const type = MIME[ext];
+
+    if (filePath.endsWith("index.html")) {
+      const html = (await file.text()).replaceAll(API_BASE_PLACEHOLDER, API_BASE);
+      return new Response(html, { headers: { "Content-Type": type ?? "text/html; charset=utf-8" } });
+    }
+
     return new Response(file, type ? { headers: { "Content-Type": type } } : undefined);
   },
 });
